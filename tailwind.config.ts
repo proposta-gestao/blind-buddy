@@ -61,7 +61,29 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Poker specific colors
+				'poker-felt': 'hsl(var(--poker-felt))',
+				'poker-chip': 'hsl(var(--poker-chip))',
+				'poker-highlight': 'hsl(var(--poker-highlight))',
+				'timer-warning': 'hsl(var(--timer-warning))',
+				'timer-critical': 'hsl(var(--timer-critical))'
+			},
+			backgroundImage: {
+				'gradient-felt': 'var(--gradient-felt)',
+				'gradient-chip': 'var(--gradient-chip)',
+				'gradient-timer': 'var(--gradient-timer)'
+			},
+			boxShadow: {
+				'poker': 'var(--shadow-poker)',
+				'glow': 'var(--shadow-glow)',
+				'chip': 'var(--shadow-chip)'
+			},
+			fontSize: {
+				'massive': 'var(--text-massive)',
+				'display': 'var(--text-display)',
+				'title': 'var(--text-title)',
+				'subtitle': 'var(--text-subtitle)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

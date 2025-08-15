@@ -2,41 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Poker Tournament Design System - Professional dark theme */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Poker dark theme - main colors */
+    --background: 220 13% 8%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 13% 10%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 13% 10%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Poker green primary */
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Dark secondary */
+    --secondary: 220 13% 15%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 13% 12%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Poker gold accent */
+    --accent: 45 93% 58%;
+    --accent-foreground: 220 13% 8%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Red for alerts/danger */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 20%;
+    --input: 220 13% 15%;
+    --ring: 142 76% 36%;
 
-    --radius: 0.5rem;
+    /* Poker specific colors */
+    --poker-felt: 142 30% 20%;
+    --poker-chip: 45 93% 58%;
+    --poker-highlight: 60 100% 50%;
+    --timer-warning: 25 95% 53%;
+    --timer-critical: 0 84% 60%;
+
+    /* Enhanced radius for poker theme */
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-felt: linear-gradient(135deg, hsl(142 30% 20%), hsl(142 40% 15%));
+    --gradient-chip: linear-gradient(135deg, hsl(45 93% 58%), hsl(45 100% 65%));
+    --gradient-timer: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 80% 40%));
+    
+    /* Shadows */
+    --shadow-poker: 0 10px 30px -5px hsl(220 13% 4% / 0.8);
+    --shadow-glow: 0 0 30px hsl(142 76% 36% / 0.3);
+    --shadow-chip: 0 5px 20px -5px hsl(45 93% 58% / 0.4);
+
+    /* Typography scale for poker displays */
+    --text-massive: 4rem;
+    --text-display: 3rem;
+    --text-title: 2rem;
+    --text-subtitle: 1.25rem;
 
     --sidebar-background: 0 0% 98%;
 
