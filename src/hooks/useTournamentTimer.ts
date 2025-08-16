@@ -92,6 +92,15 @@ export const useTournamentTimer = (initialState: TournamentState) => {
     }
   }, [state.currentLevel, state.structure.blindLevels, playNotification]);
 
+  const updateStructure = useCallback((newStructure: TournamentState['structure']) => {
+    setState(prev => ({
+      ...prev,
+      structure: newStructure,
+      currentLevel: 0,
+      timeRemaining: newStructure.blindLevels[0]?.duration * 60 || 0
+    }));
+  }, []);
+
   const formatTime = useCallback((seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -165,6 +174,7 @@ export const useTournamentTimer = (initialState: TournamentState) => {
     pauseTimer,
     resetTimer,
     skipLevel,
+    updateStructure,
     formatTime,
     getTimeStatus,
     isRunning: state.isRunning && !state.isPaused,

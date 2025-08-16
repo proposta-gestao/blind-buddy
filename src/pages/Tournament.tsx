@@ -31,25 +31,15 @@ export default function Tournament() {
   const handleStructureChange = useCallback((structureId: string) => {
     const newStructure = TOURNAMENT_STRUCTURES.find(s => s.id === structureId);
     if (newStructure && !tournament.isRunning) {
-      // Reset tournament with new structure
-      tournament.resetTimer();
-      
-      // Update state with new structure
-      const newState: TournamentState = {
-        ...initialState,
-        structure: newStructure,
-        timeRemaining: newStructure.blindLevels[0]?.duration * 60 || 0,
-        totalPlayers: players.length,
-        playersRemaining: players.filter(p => !p.isEliminated).length,
-        prizePool: players.length * newStructure.buyIn
-      };
+      // Update the tournament structure
+      tournament.updateStructure(newStructure);
       
       toast({
         title: "Estrutura Alterada",
         description: `Torneio configurado para: ${newStructure.name}`,
       });
     }
-  }, [tournament, players, initialState, toast]);
+  }, [tournament, toast]);
 
   const handleAddPlayer = useCallback((newPlayer: Omit<Player, 'id'>) => {
     const player: Player = {
