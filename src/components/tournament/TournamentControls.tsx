@@ -15,6 +15,7 @@ interface TournamentControlsProps {
   onSkip: () => void;
   onStructureChange: (structureId: string) => void;
   onPlayersToggle: () => void;
+  onSettingsToggle: () => void;
 }
 
 export function TournamentControls({
@@ -26,7 +27,8 @@ export function TournamentControls({
   onReset,
   onSkip,
   onStructureChange,
-  onPlayersToggle
+  onPlayersToggle,
+  onSettingsToggle
 }: TournamentControlsProps) {
   return (
     <Card className="bg-gradient-felt border-primary/20 shadow-poker">
@@ -91,6 +93,7 @@ export function TournamentControls({
             </Button>
             
             <Button 
+              onClick={onSettingsToggle}
               variant="secondary" 
               size="default"
               className="flex-1 min-w-[120px]"

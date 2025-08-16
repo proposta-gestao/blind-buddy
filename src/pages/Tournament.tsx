@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { TournamentDisplay } from "@/components/tournament/TournamentDisplay";
 import { TournamentControls } from "@/components/tournament/TournamentControls";
 import { PlayerManager } from "@/components/tournament/PlayerManager";
+import { SettingsDialog } from "@/components/tournament/SettingsDialog";
 import { useTournamentTimer } from "@/hooks/useTournamentTimer";
 import { TournamentState, Player } from "@/types/tournament";
 import { TOURNAMENT_STRUCTURES } from "@/data/tournament-structures";
@@ -14,6 +15,7 @@ export default function Tournament() {
   const initialStructure = TOURNAMENT_STRUCTURES[0];
   const [players, setPlayers] = useState<Player[]>([]);
   const [isPlayerManagerOpen, setIsPlayerManagerOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
   const initialState: TournamentState = {
     isRunning: false,
@@ -121,6 +123,7 @@ export default function Tournament() {
               onSkip={tournament.skipLevel}
               onStructureChange={handleStructureChange}
               onPlayersToggle={() => setIsPlayerManagerOpen(true)}
+              onSettingsToggle={() => setIsSettingsOpen(true)}
             />
           </div>
           
@@ -155,6 +158,12 @@ export default function Tournament() {
           onAddPlayer={handleAddPlayer}
           onRemovePlayer={handleRemovePlayer}
           onEliminatePlayer={handleEliminatePlayer}
+        />
+
+        {/* Settings Modal */}
+        <SettingsDialog
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
         />
       </div>
     </div>
