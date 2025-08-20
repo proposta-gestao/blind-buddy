@@ -42,4 +42,6 @@ export interface Player {
   chips: number;
   rebuys: number;
   addons: number;
+  buyInType: 'normal' | 'double';
+  paidAdminFee: boolean;
 }

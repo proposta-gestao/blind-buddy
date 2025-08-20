@@ -59,7 +59,9 @@ export default function Tournament() {
     const player: Player = {
       ...newPlayer,
       id: Date.now().toString(),
-      chips: tournament.state.structure.startingChips
+      chips: tournament.state.structure.startingChips,
+      buyInType: newPlayer.buyInType || 'normal',
+      paidAdminFee: newPlayer.paidAdminFee || false
     };
     
     setPlayers(prev => [...prev, player]);
@@ -107,7 +109,12 @@ export default function Tournament() {
     totalPlayers: players.length,
     playersRemaining: players.filter(p => !p.isEliminated).length,
     prizePool: Math.max(
-      players.length * tournament.state.structure.buyIn,
+      players.reduce((total, player) => {
+        const buyInAmount = player.buyInType === 'double' 
+          ? tournament.state.structure.doubleBuyIn 
+          : tournament.state.structure.buyIn;
+        return total + buyInAmount;
+      }, 0),
       tournament.state.structure.guaranteedPrize
     )
   };

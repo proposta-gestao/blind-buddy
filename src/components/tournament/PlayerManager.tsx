@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { UserPlus, Trash2, Trophy, Users } from "lucide-react";
 import { Player } from "@/types/tournament";
 
@@ -27,6 +29,8 @@ export function PlayerManager({
   onEliminatePlayer
 }: PlayerManagerProps) {
   const [newPlayerName, setNewPlayerName] = useState("");
+  const [buyInType, setBuyInType] = useState<'normal' | 'double'>('normal');
+  const [paidAdminFee, setPaidAdminFee] = useState(false);
 
   const handleAddPlayer = () => {
     if (newPlayerName.trim()) {
@@ -35,9 +39,13 @@ export function PlayerManager({
         isEliminated: false,
         chips: 0,
         rebuys: 0,
-        addons: 0
+        addons: 0,
+        buyInType,
+        paidAdminFee
       });
       setNewPlayerName("");
+      setBuyInType('normal');
+      setPaidAdminFee(false);
     }
   };
 
@@ -58,23 +66,43 @@ export function PlayerManager({
           <div className="space-y-6 pr-4">
           {/* Add Player */}
           <Card className="p-4">
-            <div className="flex gap-3">
-              <div className="flex-1">
-                <Label htmlFor="playerName">Nome do Jogador</Label>
-                <Input
-                  id="playerName"
-                  value={newPlayerName}
-                  onChange={(e) => setNewPlayerName(e.target.value)}
-                  placeholder="Digite o nome do jogador..."
-                  onKeyPress={(e) => e.key === 'Enter' && handleAddPlayer()}
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="playerName">Nome do Jogador</Label>
+                  <Input
+                    id="playerName"
+                    value={newPlayerName}
+                    onChange={(e) => setNewPlayerName(e.target.value)}
+                    placeholder="Digite o nome do jogador..."
+                    onKeyPress={(e) => e.key === 'Enter' && handleAddPlayer()}
+                  />
+                </div>
+                <div>
+                  <Label>Tipo de Buy-in</Label>
+                  <Select value={buyInType} onValueChange={(value: 'normal' | 'double') => setBuyInType(value)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="double">Duplo</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="adminFee" 
+                  checked={paidAdminFee}
+                  onCheckedChange={(checked) => setPaidAdminFee(!!checked)}
                 />
+                <Label htmlFor="adminFee">Pagar taxa administrativa</Label>
               </div>
-              <div className="flex items-end">
-                <Button onClick={handleAddPlayer} variant="chip">
-                  <UserPlus className="w-4 h-4" />
-                  Adicionar
-                </Button>
-              </div>
+              <Button onClick={handleAddPlayer} variant="chip" className="w-full">
+                <UserPlus className="w-4 h-4 mr-2" />
+                Adicionar Jogador
+              </Button>
             </div>
           </Card>
 
@@ -107,6 +135,12 @@ export function PlayerManager({
                     <div className="flex items-center gap-3">
                       <span className="font-medium">{player.name}</span>
                       <Badge variant="secondary">Ativo</Badge>
+                      <Badge variant={player.buyInType === 'double' ? 'default' : 'outline'}>
+                        {player.buyInType === 'double' ? 'Buy-in Duplo' : 'Buy-in Normal'}
+                      </Badge>
+                      {player.paidAdminFee && (
+                        <Badge variant="destructive">Taxa Admin</Badge>
+                      )}
                     </div>
                     <div className="flex gap-2">
                       <Button
