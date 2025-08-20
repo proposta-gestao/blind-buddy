@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserPlus, Trash2, Trophy, Users } from "lucide-react";
 import { Player } from "@/types/tournament";
 
@@ -53,7 +54,8 @@ export function PlayerManager({
           </DialogTitle>
         </DialogHeader>
         
-        <div className="space-y-6 overflow-y-auto">
+        <ScrollArea className="h-[60vh]">
+          <div className="space-y-6 pr-4">
           {/* Add Player */}
           <Card className="p-4">
             <div className="flex gap-3">
@@ -170,6 +172,7 @@ export function PlayerManager({
             </Card>
           )}
         </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
