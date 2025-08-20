@@ -15,6 +15,9 @@ export interface TournamentStructure {
   blindLevels: BlindLevel[];
   startingChips: number;
   buyIn: number;
+  doubleBuyIn: number;
+  adminFee: number;
+  guaranteedPrize: number;
   rebuyAllowed: boolean;
   addonAllowed: boolean;
 }

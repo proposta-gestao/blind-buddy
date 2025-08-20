@@ -58,6 +58,24 @@ export function TournamentDisplay({
                 </div>
               </div>
               <div className="bg-card/50 rounded-lg p-3">
+                <div className="text-sm text-muted-foreground">Buy-in Duplo</div>
+                <div className="text-lg font-bold text-accent">
+                  {formatCurrency(tournamentState.structure.doubleBuyIn)}
+                </div>
+              </div>
+              <div className="bg-card/50 rounded-lg p-3">
+                <div className="text-sm text-muted-foreground">Taxa Admin</div>
+                <div className="text-lg font-bold text-muted-foreground">
+                  {formatCurrency(tournamentState.structure.adminFee)}
+                </div>
+              </div>
+              <div className="bg-card/50 rounded-lg p-3">
+                <div className="text-sm text-muted-foreground">Garantido</div>
+                <div className="text-lg font-bold text-primary">
+                  {formatCurrency(tournamentState.structure.guaranteedPrize)}
+                </div>
+              </div>
+              <div className="bg-card/50 rounded-lg p-3">
                 <div className="text-sm text-muted-foreground">Jogadores</div>
                 <div className="text-lg font-bold text-primary">
                   {tournamentState.playersRemaining}/{tournamentState.totalPlayers}

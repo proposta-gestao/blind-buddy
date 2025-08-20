@@ -7,6 +7,9 @@ export const TOURNAMENT_STRUCTURES: TournamentStructure[] = [
     description: "Blinds aumentam a cada 10 minutos - Ritmo acelerado",
     startingChips: 10000,
     buyIn: 100,
+    doubleBuyIn: 200,
+    adminFee: 10,
+    guaranteedPrize: 1000,
     rebuyAllowed: true,
     addonAllowed: true,
     blindLevels: [
@@ -35,6 +38,9 @@ export const TOURNAMENT_STRUCTURES: TournamentStructure[] = [
     description: "Blinds aumentam a cada 15 minutos - Ritmo padrão",
     startingChips: 15000,
     buyIn: 150,
+    doubleBuyIn: 300,
+    adminFee: 15,
+    guaranteedPrize: 2000,
     rebuyAllowed: true,
     addonAllowed: true,
     blindLevels: [
@@ -63,6 +69,9 @@ export const TOURNAMENT_STRUCTURES: TournamentStructure[] = [
     description: "Blinds aumentam a cada 30 minutos - Estrutura profunda",
     startingChips: 30000,
     buyIn: 250,
+    doubleBuyIn: 500,
+    adminFee: 25,
+    guaranteedPrize: 5000,
     rebuyAllowed: false,
     addonAllowed: true,
     blindLevels: [

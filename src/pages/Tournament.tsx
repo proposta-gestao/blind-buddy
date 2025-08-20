@@ -94,7 +94,10 @@ export default function Tournament() {
     ...tournament.state,
     totalPlayers: players.length,
     playersRemaining: players.filter(p => !p.isEliminated).length,
-    prizePool: players.length * tournament.state.structure.buyIn
+    prizePool: Math.max(
+      players.length * tournament.state.structure.buyIn,
+      tournament.state.structure.guaranteedPrize
+    )
   };
 
   return (
