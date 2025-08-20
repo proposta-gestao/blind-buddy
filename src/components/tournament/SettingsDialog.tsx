@@ -3,14 +3,34 @@ import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
-import { Volume2, Bell, Timer } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Volume2, Bell, Timer, DollarSign } from "lucide-react";
+import { TournamentStructure } from "@/types/tournament";
+import { useState } from "react";
 
 interface SettingsDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  currentStructure: TournamentStructure;
+  onUpdateStructure: (updates: Partial<TournamentStructure>) => void;
 }
 
-export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
+export function SettingsDialog({ isOpen, onClose, currentStructure, onUpdateStructure }: SettingsDialogProps) {
+  const [buyIn, setBuyIn] = useState(currentStructure.buyIn);
+  const [doubleBuyIn, setDoubleBuyIn] = useState(currentStructure.doubleBuyIn);
+  const [adminFee, setAdminFee] = useState(currentStructure.adminFee);
+  const [guaranteedPrize, setGuaranteedPrize] = useState(currentStructure.guaranteedPrize);
+
+  const handleSave = () => {
+    onUpdateStructure({
+      buyIn,
+      doubleBuyIn,
+      adminFee,
+      guaranteedPrize
+    });
+    onClose();
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
@@ -87,6 +107,62 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
             </div>
           </Card>
 
+          {/* Tournament Values */}
+          <Card className="p-4 bg-gradient-felt border-primary/20">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <DollarSign className="w-4 h-4 text-primary" />
+                <Label className="text-sm font-medium">Valores do Torneio</Label>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label htmlFor="buy-in" className="text-sm">Buy-in</Label>
+                  <Input
+                    id="buy-in"
+                    type="number"
+                    value={buyIn}
+                    onChange={(e) => setBuyIn(Number(e.target.value))}
+                    className="h-8"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="double-buy-in" className="text-sm">Buy-in Duplo</Label>
+                  <Input
+                    id="double-buy-in"
+                    type="number"
+                    value={doubleBuyIn}
+                    onChange={(e) => setDoubleBuyIn(Number(e.target.value))}
+                    className="h-8"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="admin-fee" className="text-sm">Taxa Admin</Label>
+                  <Input
+                    id="admin-fee"
+                    type="number"
+                    value={adminFee}
+                    onChange={(e) => setAdminFee(Number(e.target.value))}
+                    className="h-8"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="guaranteed-prize" className="text-sm">Garantido</Label>
+                  <Input
+                    id="guaranteed-prize"
+                    type="number"
+                    value={guaranteedPrize}
+                    onChange={(e) => setGuaranteedPrize(Number(e.target.value))}
+                    className="h-8"
+                  />
+                </div>
+              </div>
+            </div>
+          </Card>
+
           {/* Timer Settings */}
           <Card className="p-4 bg-gradient-felt border-primary/20">
             <div className="space-y-4">
@@ -112,6 +188,15 @@ export function SettingsDialog({ isOpen, onClose }: SettingsDialogProps) {
               </div>
             </div>
           </Card>
+        </div>
+        
+        <div className="flex justify-end gap-2 mt-6">
+          <Button variant="outline" onClick={onClose}>
+            Cancelar
+          </Button>
+          <Button onClick={handleSave}>
+            Salvar Alterações
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

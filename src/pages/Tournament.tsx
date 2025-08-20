@@ -43,6 +43,18 @@ export default function Tournament() {
     }
   }, [tournament, toast]);
 
+  const handleUpdateStructure = useCallback((updates: Partial<TournamentState['structure']>) => {
+    if (!tournament.isRunning) {
+      const updatedStructure = { ...tournament.state.structure, ...updates };
+      tournament.updateStructure(updatedStructure);
+      
+      toast({
+        title: "Configurações Salvas",
+        description: "Os valores do torneio foram atualizados.",
+      });
+    }
+  }, [tournament, toast]);
+
   const handleAddPlayer = useCallback((newPlayer: Omit<Player, 'id'>) => {
     const player: Player = {
       ...newPlayer,
@@ -167,6 +179,8 @@ export default function Tournament() {
         <SettingsDialog
           isOpen={isSettingsOpen}
           onClose={() => setIsSettingsOpen(false)}
+          currentStructure={tournament.state.structure}
+          onUpdateStructure={handleUpdateStructure}
         />
       </div>
     </div>
