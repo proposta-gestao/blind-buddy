@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
 import { TournamentDisplay } from "@/components/tournament/TournamentDisplay";
 import { TournamentControls } from "@/components/tournament/TournamentControls";
-import { PlayerManager } from "@/components/tournament/PlayerManager";
-import { SettingsDialog } from "@/components/tournament/SettingsDialog";
+import { PlayerSidebar } from "@/components/tournament/PlayerSidebar";
+import { SettingsSidebar } from "@/components/tournament/SettingsSidebar";
 import { useTournamentTimer } from "@/hooks/useTournamentTimer";
 import { TournamentState, Player } from "@/types/tournament";
 import { TOURNAMENT_STRUCTURES } from "@/data/tournament-structures";
@@ -286,8 +286,8 @@ export default function TournamentManagement() {
           </div>
         </div>
 
-        {/* Player Manager Modal */}
-        <PlayerManager
+        {/* Player Sidebar */}
+        <PlayerSidebar
           isOpen={isPlayerManagerOpen}
           onClose={() => setIsPlayerManagerOpen(false)}
           players={players}
@@ -296,8 +296,8 @@ export default function TournamentManagement() {
           onEliminatePlayer={handleEliminatePlayer}
         />
 
-        {/* Settings Modal */}
-        <SettingsDialog
+        {/* Settings Sidebar */}
+        <SettingsSidebar
           isOpen={isSettingsOpen}
           onClose={() => setIsSettingsOpen(false)}
           currentStructure={tournament.state.structure}
