@@ -69,12 +69,7 @@ export function TournamentDisplay({
                   {formatCurrency(tournamentState.structure.adminFee)}
                 </div>
               </div>
-              <div className="bg-card/50 rounded-lg p-3">
-                <div className="text-sm text-muted-foreground">Garantido</div>
-                <div className="text-lg font-bold text-primary">
-                  {formatCurrency(tournamentState.structure.guaranteedPrize)}
-                </div>
-              </div>
+              
               <div className="bg-card/50 rounded-lg p-3">
                 <div className="text-sm text-muted-foreground">Jogadores</div>
                 <div className="text-lg font-bold text-primary">
@@ -82,7 +77,7 @@ export function TournamentDisplay({
                 </div>
               </div>
               <div className="bg-card/50 rounded-lg p-3">
-                <div className="text-sm text-muted-foreground">Prize Pool</div>
+                <div className="text-sm text-muted-foreground">Premiação</div>
                 <div className="text-lg font-bold text-poker-chip">
                   {formatCurrency(tournamentState.prizePool)}
                 </div>
@@ -129,22 +124,7 @@ export function TournamentDisplay({
                 </div>
               </div>
             )}
-            
-            {/* Level Info */}
-            <div className="flex justify-center items-center mt-6 pt-6 border-t border-border">
-              <div className="text-center">
-                <div className="text-sm text-muted-foreground">NÍVEL ATUAL</div>
-                <div className="text-title font-bold text-foreground">
-                  {currentLevel?.isBreak ? 'INTERVALO' : `Nível ${currentLevel?.level || 1}`}
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        {/* Timer and Next Level */}
-        <div className="space-y-6">
-          {/* Timer */}
+            {/* Timer */}
           <Card className="bg-gradient-felt border-primary/20 shadow-poker">
             <div className="p-6 text-center">
               <div className="text-sm text-muted-foreground mb-2">TEMPO RESTANTE</div>
@@ -169,6 +149,21 @@ export function TournamentDisplay({
               </div>
             </div>
           </Card>
+            
+          </div>
+        </Card>
+
+        {/* Timer and Next Level */}
+        <div className="space-y-6">
+          {/* Level Info */}
+            <div className="flex justify-center items-center mt-6 pt-6 border-t border-border">
+              <div className="text-center">
+                <div className="text-sm text-muted-foreground">NÍVEL ATUAL</div>
+                <div className="text-title font-bold text-foreground">
+                  {currentLevel?.isBreak ? 'INTERVALO' : `Nível ${currentLevel?.level || 1}`}
+                </div>
+              </div>
+            </div>
 
           {/* Next Level */}
           {nextLevel && (
