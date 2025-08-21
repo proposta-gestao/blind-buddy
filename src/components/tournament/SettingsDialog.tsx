@@ -21,13 +21,15 @@ export function SettingsDialog({ isOpen, onClose, currentStructure, onUpdateStru
   const [doubleBuyIn, setDoubleBuyIn] = useState(currentStructure.doubleBuyIn);
   const [adminFee, setAdminFee] = useState(currentStructure.adminFee);
   const [guaranteedPrize, setGuaranteedPrize] = useState(currentStructure.guaranteedPrize);
+  const [startingChips, setStartingChips] = useState(currentStructure.startingChips);
 
   const handleSave = () => {
     onUpdateStructure({
       buyIn,
       doubleBuyIn,
       adminFee,
-      guaranteedPrize
+      guaranteedPrize,
+      startingChips
     });
     onClose();
   };
@@ -159,6 +161,17 @@ export function SettingsDialog({ isOpen, onClose, currentStructure, onUpdateStru
                     className="h-8"
                   />
                 </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="starting-chips" className="text-sm">Fichas Iniciais</Label>
+                <Input
+                  id="starting-chips"
+                  type="number"
+                  value={startingChips}
+                  onChange={(e) => setStartingChips(Number(e.target.value))}
+                  className="h-8"
+                />
               </div>
             </div>
           </Card>

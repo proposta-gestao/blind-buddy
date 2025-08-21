@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { Play, Trophy, Users, Settings, Clock } from "lucide-react";
+import { Play, Trophy, Users, Settings, Clock, Monitor } from "lucide-react";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -23,15 +23,26 @@ const Index = () => {
             Sistema profissional para gerenciamento de torneios de poker com interface moderna, 
             timer avançado e controle completo de blinds e jogadores.
           </p>
-          <Button 
-            onClick={() => navigate('/tournament')} 
-            variant="chip" 
-            size="xl"
-            className="shadow-chip"
-          >
-            <Play className="w-6 h-6" />
-            Iniciar Torneio
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={() => navigate('/tournament')} 
+              variant="chip" 
+              size="xl"
+              className="shadow-chip"
+            >
+              <Settings className="w-6 h-6" />
+              Gerenciar Torneio
+            </Button>
+            <Button 
+              onClick={() => navigate('/tournament/display')} 
+              variant="timer" 
+              size="xl"
+              className="shadow-chip"
+            >
+              <Monitor className="w-6 h-6" />
+              Visualizar Torneio
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -116,14 +127,24 @@ const Index = () => {
               <span>Inicie o timer e comece a jogar!</span>
             </div>
           </div>
-          <Button 
-            onClick={() => navigate('/tournament')} 
-            variant="timer" 
-            size="xl"
-          >
-            <Play className="w-6 h-6" />
-            Começar Agora
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={() => navigate('/tournament')} 
+              variant="timer" 
+              size="xl"
+            >
+              <Settings className="w-6 h-6" />
+              Gerenciar Torneio
+            </Button>
+            <Button 
+              onClick={() => navigate('/tournament/display')} 
+              variant="chip" 
+              size="xl"
+            >
+              <Monitor className="w-6 h-6" />
+              Visualizar Torneio
+            </Button>
+          </div>
         </div>
       </div>
     </div>
