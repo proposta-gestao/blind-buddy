@@ -12,6 +12,7 @@ export const TOURNAMENT_STRUCTURES: TournamentStructure[] = [
     guaranteedPrize: 1000,
     rebuyAllowed: true,
     addonAllowed: true,
+    breakDuration: 15,
     blindLevels: [
       { level: 1, smallBlind: 25, bigBlind: 50, ante: 0, duration: 10 },
       { level: 2, smallBlind: 50, bigBlind: 100, ante: 0, duration: 10 },
@@ -43,6 +44,7 @@ export const TOURNAMENT_STRUCTURES: TournamentStructure[] = [
     guaranteedPrize: 2000,
     rebuyAllowed: true,
     addonAllowed: true,
+    breakDuration: 20,
     blindLevels: [
       { level: 1, smallBlind: 25, bigBlind: 50, ante: 0, duration: 15 },
       { level: 2, smallBlind: 50, bigBlind: 100, ante: 0, duration: 15 },
@@ -74,6 +76,7 @@ export const TOURNAMENT_STRUCTURES: TournamentStructure[] = [
     guaranteedPrize: 5000,
     rebuyAllowed: false,
     addonAllowed: true,
+    breakDuration: 30,
     blindLevels: [
       { level: 1, smallBlind: 25, bigBlind: 50, ante: 0, duration: 30 },
       { level: 2, smallBlind: 50, bigBlind: 100, ante: 0, duration: 30 },

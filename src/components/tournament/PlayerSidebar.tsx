@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { UserPlus, Trash2, Trophy, Users, X } from "lucide-react";
 import { Player } from "@/types/tournament";
 
@@ -84,15 +84,20 @@ export function PlayerSidebar({
                   </div>
                   <div>
                     <Label className="text-xs">Tipo de Buy-in</Label>
-                    <Select value={buyInType} onValueChange={(value: 'normal' | 'double') => setBuyInType(value)}>
-                      <SelectTrigger className="h-8">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background border border-border z-[60]">
-                        <SelectItem value="normal">Normal</SelectItem>
-                        <SelectItem value="double">Duplo</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <RadioGroup 
+                      value={buyInType} 
+                      onValueChange={(value: 'normal' | 'double') => setBuyInType(value)}
+                      className="flex gap-4 mt-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="normal" id="normal" />
+                        <Label htmlFor="normal" className="text-xs">Buy-in Normal</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="double" id="double" />
+                        <Label htmlFor="double" className="text-xs">Buy-in Duplo</Label>
+                      </div>
+                    </RadioGroup>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox 

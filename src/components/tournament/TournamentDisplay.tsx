@@ -94,13 +94,35 @@ export function TournamentDisplay({
 
       {/* Main Display */}
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Current Blinds */}
+        {/* Timer Display */}
         <Card className="lg:col-span-2 bg-gradient-felt border-primary/20 shadow-poker">
-          <div className="p-8">
+          <div className="p-8 text-center">
+            <div className="text-sm text-muted-foreground mb-4">TEMPO RESTANTE</div>
+            <Button
+              variant={getTimerVariant()}
+              size="massive"
+              className="w-full text-display pointer-events-none mb-6"
+            >
+              {formatTime(timeRemaining)}
+            </Button>
+            
+            {/* Progress Bar */}
+            <div className="bg-muted rounded-full h-3 mb-6">
+              <div 
+                className={cn(
+                  "h-3 rounded-full transition-all duration-1000",
+                  timeStatus === 'critical' ? 'bg-timer-critical' :
+                  timeStatus === 'warning' ? 'bg-timer-warning' : 'bg-primary'
+                )}
+                style={{ width: `${getProgressPercentage()}%` }}
+              />
+            </div>
+
+            {/* Current Blinds */}
             {currentLevel?.isBreak ? (
               <div className="text-center">
                 <div className="text-sm text-muted-foreground mb-2">INTERVALO</div>
-                <div className="text-display font-bold text-poker-highlight">
+                <div className="text-title font-bold text-poker-highlight">
                   BREAK TIME
                 </div>
                 <div className="text-subtitle text-muted-foreground mt-2">
@@ -111,61 +133,35 @@ export function TournamentDisplay({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                 <div>
                   <div className="text-sm text-muted-foreground mb-2">SMALL BLIND</div>
-                  <div className="text-massive font-bold text-primary">
+                  <div className="text-title font-bold text-primary">
                     {currentLevel?.smallBlind?.toLocaleString() || '0'}
                   </div>
                 </div>
                 <div>
                   <div className="text-sm text-muted-foreground mb-2">BIG BLIND</div>
-                  <div className="text-massive font-bold text-poker-chip">
+                  <div className="text-title font-bold text-poker-chip">
                     {currentLevel?.bigBlind?.toLocaleString() || '0'}
                   </div>
                 </div>
                 <div>
                   <div className="text-sm text-muted-foreground mb-2">ANTE</div>
-                  <div className="text-massive font-bold text-accent">
+                  <div className="text-title font-bold text-accent">
                     {currentLevel?.ante?.toLocaleString() || '0'}
                   </div>
                 </div>
               </div>
             )}
-            
-            {/* Level Info */}
-            <div className="flex justify-center items-center mt-6 pt-6 border-t border-border">
-              <div className="text-center">
-                <div className="text-sm text-muted-foreground">NÍVEL ATUAL</div>
-                <div className="text-title font-bold text-foreground">
-                  {currentLevel?.isBreak ? 'INTERVALO' : `Nível ${currentLevel?.level || 1}`}
-                </div>
-              </div>
-            </div>
           </div>
         </Card>
 
-        {/* Timer and Next Level */}
+        {/* Level Info and Next Level */}
         <div className="space-y-6">
-          {/* Timer */}
+          {/* Current Level */}
           <Card className="bg-gradient-felt border-primary/20 shadow-poker">
             <div className="p-6 text-center">
-              <div className="text-sm text-muted-foreground mb-2">TEMPO RESTANTE</div>
-              <Button
-                variant={getTimerVariant()}
-                size="massive"
-                className="w-full text-display pointer-events-none"
-              >
-                {formatTime(timeRemaining)}
-              </Button>
-              
-              {/* Progress Bar */}
-              <div className="mt-4 bg-muted rounded-full h-2">
-                <div 
-                  className={cn(
-                    "h-2 rounded-full transition-all duration-1000",
-                    timeStatus === 'critical' ? 'bg-timer-critical' :
-                    timeStatus === 'warning' ? 'bg-timer-warning' : 'bg-primary'
-                  )}
-                  style={{ width: `${getProgressPercentage()}%` }}
-                />
+              <div className="text-sm text-muted-foreground mb-2">NÍVEL ATUAL</div>
+              <div className="text-massive font-bold text-foreground">
+                {currentLevel?.isBreak ? 'INTERVALO' : `Nível ${currentLevel?.level || 1}`}
               </div>
             </div>
           </Card>

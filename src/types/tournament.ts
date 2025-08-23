@@ -20,6 +20,7 @@ export interface TournamentStructure {
   guaranteedPrize: number;
   rebuyAllowed: boolean;
   addonAllowed: boolean;
+  breakDuration: number; // in minutes
 }
 
 export interface TournamentState {

@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { MoneyInput } from "@/components/ui/money-input";
+import { Textarea } from "@/components/ui/textarea";
 import { Volume2, Bell, Timer, DollarSign, X } from "lucide-react";
 import { TournamentStructure } from "@/types/tournament";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface SettingsSidebarProps {
   isOpen: boolean;
@@ -18,19 +20,30 @@ interface SettingsSidebarProps {
 }
 
 export function SettingsSidebar({ isOpen, onClose, currentStructure, onUpdateStructure }: SettingsSidebarProps) {
+  const [name, setName] = useState(currentStructure.name);
+  const [description, setDescription] = useState(currentStructure.description);
   const [buyIn, setBuyIn] = useState(currentStructure.buyIn);
   const [doubleBuyIn, setDoubleBuyIn] = useState(currentStructure.doubleBuyIn);
   const [adminFee, setAdminFee] = useState(currentStructure.adminFee);
   const [guaranteedPrize, setGuaranteedPrize] = useState(currentStructure.guaranteedPrize);
   const [startingChips, setStartingChips] = useState(currentStructure.startingChips);
+  const [breakDuration, setBreakDuration] = useState(currentStructure.breakDuration || 15);
+
+  // Auto-calculate double buy-in when buy-in changes
+  useEffect(() => {
+    setDoubleBuyIn(buyIn * 2);
+  }, [buyIn]);
 
   const handleSave = () => {
     onUpdateStructure({
+      name,
+      description,
       buyIn,
       doubleBuyIn,
       adminFee,
       guaranteedPrize,
-      startingChips
+      startingChips,
+      breakDuration
     });
     onClose();
   };
@@ -49,6 +62,40 @@ export function SettingsSidebar({ isOpen, onClose, currentStructure, onUpdateStr
         
         <ScrollArea className="h-[calc(100vh-80px)]">
           <div className="p-4 space-y-6">
+            {/* Tournament Info */}
+            <Card className="p-4 bg-gradient-felt border-primary/20">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Timer className="w-4 h-4 text-primary" />
+                  <Label className="text-sm font-medium">Informações do Torneio</Label>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="space-y-2">
+                    <Label htmlFor="tournament-name" className="text-xs">Nome do Torneio</Label>
+                    <Input
+                      id="tournament-name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="h-8"
+                      placeholder="Nome do torneio..."
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="tournament-description" className="text-xs">Descrição</Label>
+                    <Textarea
+                      id="tournament-description"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="min-h-[60px] resize-none"
+                      placeholder="Descrição do torneio..."
+                    />
+                  </div>
+                </div>
+              </div>
+            </Card>
+
             {/* Tournament Values */}
             <Card className="p-4 bg-gradient-felt border-primary/20">
               <div className="space-y-4">
@@ -60,58 +107,68 @@ export function SettingsSidebar({ isOpen, onClose, currentStructure, onUpdateStr
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
                     <Label htmlFor="buy-in" className="text-xs">Buy-in</Label>
-                    <Input
+                    <MoneyInput
                       id="buy-in"
-                      type="number"
                       value={buyIn}
-                      onChange={(e) => setBuyIn(Number(e.target.value))}
+                      onChange={setBuyIn}
                       className="h-8"
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="double-buy-in" className="text-xs">Buy-in Duplo</Label>
-                    <Input
+                    <MoneyInput
                       id="double-buy-in"
-                      type="number"
                       value={doubleBuyIn}
-                      onChange={(e) => setDoubleBuyIn(Number(e.target.value))}
+                      onChange={setDoubleBuyIn}
                       className="h-8"
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="admin-fee" className="text-xs">Taxa Admin</Label>
-                    <Input
+                    <MoneyInput
                       id="admin-fee"
-                      type="number"
                       value={adminFee}
-                      onChange={(e) => setAdminFee(Number(e.target.value))}
+                      onChange={setAdminFee}
                       className="h-8"
                     />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="guaranteed-prize" className="text-xs">Garantido</Label>
-                    <Input
+                    <MoneyInput
                       id="guaranteed-prize"
-                      type="number"
                       value={guaranteedPrize}
-                      onChange={(e) => setGuaranteedPrize(Number(e.target.value))}
+                      onChange={setGuaranteedPrize}
                       className="h-8"
                     />
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="starting-chips" className="text-xs">Fichas Iniciais</Label>
-                  <Input
-                    id="starting-chips"
-                    type="number"
-                    value={startingChips}
-                    onChange={(e) => setStartingChips(Number(e.target.value))}
-                    className="h-8"
-                  />
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <Label htmlFor="starting-chips" className="text-xs">Fichas Iniciais</Label>
+                    <MoneyInput
+                      id="starting-chips"
+                      value={startingChips}
+                      onChange={setStartingChips}
+                      className="h-8"
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="break-duration" className="text-xs">Tempo de Pausa (min)</Label>
+                    <Input
+                      id="break-duration"
+                      type="number"
+                      value={breakDuration}
+                      onChange={(e) => setBreakDuration(Number(e.target.value))}
+                      className="h-8"
+                      min="1"
+                      max="60"
+                    />
+                  </div>
                 </div>
               </div>
             </Card>
