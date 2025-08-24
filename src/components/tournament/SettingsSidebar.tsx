@@ -27,12 +27,20 @@ export function SettingsSidebar({ isOpen, onClose, currentStructure, onUpdateStr
   const [adminFee, setAdminFee] = useState(currentStructure.adminFee);
   const [guaranteedPrize, setGuaranteedPrize] = useState(currentStructure.guaranteedPrize);
   const [startingChips, setStartingChips] = useState(currentStructure.startingChips);
+  const [doubleBuyInChips, setDoubleBuyInChips] = useState(currentStructure.doubleBuyInChips || currentStructure.startingChips * 2);
+  const [addonChips, setAddonChips] = useState(currentStructure.addonChips || currentStructure.startingChips);
+  const [adminFeeChips, setAdminFeeChips] = useState(currentStructure.adminFeeChips || 1000);
   const [breakDuration, setBreakDuration] = useState(currentStructure.breakDuration || 15);
 
   // Auto-calculate double buy-in when buy-in changes
   useEffect(() => {
     setDoubleBuyIn(buyIn * 2);
   }, [buyIn]);
+
+  // Auto-calculate double buy-in chips when starting chips change
+  useEffect(() => {
+    setDoubleBuyInChips(startingChips * 2);
+  }, [startingChips]);
 
   const handleSave = () => {
     onUpdateStructure({
@@ -43,6 +51,9 @@ export function SettingsSidebar({ isOpen, onClose, currentStructure, onUpdateStr
       adminFee,
       guaranteedPrize,
       startingChips,
+      doubleBuyInChips,
+      addonChips,
+      adminFeeChips,
       breakDuration
     });
     onClose();
@@ -104,6 +115,17 @@ export function SettingsSidebar({ isOpen, onClose, currentStructure, onUpdateStr
                   <Label className="text-sm font-medium">Valores do Torneio</Label>
                 </div>
                 
+                {/* Guaranteed Prize - First Line */}
+                <div className="space-y-2">
+                  <Label htmlFor="guaranteed-prize" className="text-xs">Valor Garantido do Campeonato</Label>
+                  <MoneyInput
+                    id="guaranteed-prize"
+                    value={guaranteedPrize}
+                    onChange={setGuaranteedPrize}
+                    className="h-8"
+                  />
+                </div>
+                
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
                     <Label htmlFor="buy-in" className="text-xs">Buy-in</Label>
@@ -134,27 +156,49 @@ export function SettingsSidebar({ isOpen, onClose, currentStructure, onUpdateStr
                       className="h-8"
                     />
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="guaranteed-prize" className="text-xs">Garantido</Label>
-                    <MoneyInput
-                      id="guaranteed-prize"
-                      value={guaranteedPrize}
-                      onChange={setGuaranteedPrize}
-                      className="h-8"
-                    />
-                  </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-2">
-                    <Label htmlFor="starting-chips" className="text-xs">Fichas Iniciais</Label>
-                    <MoneyInput
-                      id="starting-chips"
-                      value={startingChips}
-                      onChange={setStartingChips}
-                      className="h-8"
-                    />
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                      <Label htmlFor="starting-chips" className="text-xs">Buy-in Simples</Label>
+                      <MoneyInput
+                        id="starting-chips"
+                        value={startingChips}
+                        onChange={setStartingChips}
+                        className="h-8"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="double-buyin-chips" className="text-xs">Buy-in Duplo</Label>
+                      <MoneyInput
+                        id="double-buyin-chips"
+                        value={doubleBuyInChips}
+                        onChange={setDoubleBuyInChips}
+                        className="h-8"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="addon-chips" className="text-xs">Addon</Label>
+                      <MoneyInput
+                        id="addon-chips"
+                        value={addonChips}
+                        onChange={setAddonChips}
+                        className="h-8"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="admin-fee-chips" className="text-xs">Taxa Admin (Fichas)</Label>
+                      <MoneyInput
+                        id="admin-fee-chips"
+                        value={adminFeeChips}
+                        onChange={setAdminFeeChips}
+                        className="h-8"
+                      />
+                    </div>
                   </div>
                   
                   <div className="space-y-2">

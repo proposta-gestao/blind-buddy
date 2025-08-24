@@ -20,6 +20,7 @@ export function SettingsDialog({ isOpen, onClose, currentStructure, onUpdateStru
   const [buyIn, setBuyIn] = useState(currentStructure.buyIn);
   const [doubleBuyIn, setDoubleBuyIn] = useState(currentStructure.doubleBuyIn);
   const [adminFee, setAdminFee] = useState(currentStructure.adminFee);
+  const [adminFeeChips, setAdminFeeChips] = useState(currentStructure.adminFeeChips);
   const [guaranteedPrize, setGuaranteedPrize] = useState(currentStructure.guaranteedPrize);
   const [startingChips, setStartingChips] = useState(currentStructure.startingChips);
 
@@ -28,11 +29,13 @@ export function SettingsDialog({ isOpen, onClose, currentStructure, onUpdateStru
       buyIn,
       doubleBuyIn,
       adminFee,
+      adminFeeChips,
       guaranteedPrize,
       startingChips
     });
     onClose();
   };
+  
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
@@ -117,6 +120,18 @@ export function SettingsDialog({ isOpen, onClose, currentStructure, onUpdateStru
                 <Label className="text-sm font-medium">Valores do Torneio</Label>
               </div>
               
+              {/* Guaranteed Prize - First Line */}
+              <div className="space-y-2">
+                <Label htmlFor="guaranteed-prize" className="text-sm">Valor Garantido do Campeonato</Label>
+                <Input
+                  id="guaranteed-prize"
+                  type="number"
+                  value={guaranteedPrize}
+                  onChange={(e) => setGuaranteedPrize(Number(e.target.value))}
+                  className="h-8"
+                />
+              </div>
+              
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label htmlFor="buy-in" className="text-sm">Buy-in</Label>
@@ -152,12 +167,12 @@ export function SettingsDialog({ isOpen, onClose, currentStructure, onUpdateStru
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="guaranteed-prize" className="text-sm">Garantido</Label>
+                  <Label htmlFor="admin-fee-chips" className="text-sm">Fichas Taxa Admin</Label>
                   <Input
-                    id="guaranteed-prize"
+                    id="admin-fee-chips"
                     type="number"
-                    value={guaranteedPrize}
-                    onChange={(e) => setGuaranteedPrize(Number(e.target.value))}
+                    value={adminFeeChips}
+                    onChange={(e) => setAdminFeeChips(Number(e.target.value))}
                     className="h-8"
                   />
                 </div>

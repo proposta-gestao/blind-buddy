@@ -14,8 +14,6 @@ interface TournamentControlsProps {
   onReset: () => void;
   onSkip: () => void;
   onStructureChange: (structureId: string) => void;
-  onPlayersToggle: () => void;
-  onSettingsToggle: () => void;
 }
 
 export function TournamentControls({
@@ -26,9 +24,7 @@ export function TournamentControls({
   onPause,
   onReset,
   onSkip,
-  onStructureChange,
-  onPlayersToggle,
-  onSettingsToggle
+  onStructureChange
 }: TournamentControlsProps) {
   return (
     <Card className="bg-gradient-felt border-primary/20 shadow-poker">
@@ -65,7 +61,7 @@ export function TournamentControls({
               className="flex-1 min-w-[120px]"
             >
               <RotateCcw className="w-5 h-5" />
-              Reset
+              Resetar Campeonato
             </Button>
             
             <Button 
@@ -77,29 +73,6 @@ export function TournamentControls({
             >
               <SkipForward className="w-5 h-5" />
               Próximo Nível
-            </Button>
-          </div>
-
-          {/* Secondary Controls */}
-          <div className="flex flex-wrap gap-3">
-            <Button 
-              onClick={onPlayersToggle} 
-              variant="secondary" 
-              size="default"
-              className="flex-1 min-w-[140px]"
-            >
-              <Users className="w-4 h-4" />
-              Gerenciar Jogadores
-            </Button>
-            
-            <Button 
-              onClick={onSettingsToggle}
-              variant="secondary" 
-              size="default"
-              className="flex-1 min-w-[120px]"
-            >
-              <Settings className="w-4 h-4" />
-              Configurações
             </Button>
           </div>
 

@@ -14,9 +14,13 @@ export interface TournamentStructure {
   description: string;
   blindLevels: BlindLevel[];
   startingChips: number;
+  doubleBuyInChips: number;
+  addonChips: number;
+  adminFeeChips: number;
   buyIn: number;
   doubleBuyIn: number;
   adminFee: number;
+  addon: number;
   guaranteedPrize: number;
   rebuyAllowed: boolean;
   addonAllowed: boolean;
@@ -31,6 +35,7 @@ export interface TournamentState {
   totalPlayers: number;
   playersRemaining: number;
   prizePool: number;
+  totalChips: number;
   structure: TournamentStructure;
 }
 

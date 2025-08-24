@@ -1,44 +1,30 @@
 import { useState, useCallback } from "react";
 import { TournamentDisplay } from "@/components/tournament/TournamentDisplay";
 import { TournamentControls } from "@/components/tournament/TournamentControls";
-import { PlayerSidebar } from "@/components/tournament/PlayerSidebar";
-import { SettingsSidebar } from "@/components/tournament/SettingsSidebar";
-import { useTournamentTimer } from "@/hooks/useTournamentTimer";
+import { PlayerDropdown } from "@/components/tournament/PlayerDropdown";
+import { SettingsDropdown } from "@/components/tournament/SettingsDropdown";
+import { useTournamentContext } from "@/contexts/TournamentContext";
+import { useSharedTournamentTimer } from "@/hooks/useSharedTournamentTimer";
 import { TournamentState, Player } from "@/types/tournament";
 import { TOURNAMENT_STRUCTURES } from "@/data/tournament-structures";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Monitor, ArrowLeft, Users, Settings, Trophy, Play } from "lucide-react";
+import { Monitor, ArrowLeft, Users, Trophy, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function TournamentManagement() {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { state, actions } = useTournamentContext();
+  const tournament = useSharedTournamentTimer();
   
-  // Initialize with first structure
-  const initialStructure = TOURNAMENT_STRUCTURES[0];
-  const [players, setPlayers] = useState<Player[]>([]);
   const [isPlayerManagerOpen, setIsPlayerManagerOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  
-  const initialState: TournamentState = {
-    isRunning: false,
-    isPaused: false,
-    currentLevel: 0,
-    timeRemaining: initialStructure.blindLevels[0]?.duration * 60 || 0,
-    totalPlayers: 0,
-    playersRemaining: 0,
-    prizePool: 0,
-    structure: initialStructure
-  };
-
-  const tournament = useTournamentTimer(initialState);
 
   const handleStructureChange = useCallback((structureId: string) => {
     const newStructure = TOURNAMENT_STRUCTURES.find(s => s.id === structureId);
     if (newStructure && !tournament.isRunning) {
-      // Update the tournament structure
       tournament.updateStructure(newStructure);
       
       toast({
@@ -50,7 +36,7 @@ export default function TournamentManagement() {
 
   const handleUpdateStructure = useCallback((updates: Partial<TournamentState['structure']>) => {
     if (!tournament.isRunning) {
-      const updatedStructure = { ...tournament.state.structure, ...updates };
+      const updatedStructure = { ...state.tournament.structure, ...updates };
       tournament.updateStructure(updatedStructure);
       
       toast({
@@ -58,28 +44,28 @@ export default function TournamentManagement() {
         description: "Os valores do torneio foram atualizados.",
       });
     }
-  }, [tournament, toast]);
+  }, [tournament, state.tournament.structure, toast]);
 
   const handleAddPlayer = useCallback((newPlayer: Omit<Player, 'id'>) => {
     const player: Player = {
       ...newPlayer,
       id: Date.now().toString(),
-      chips: tournament.state.structure.startingChips,
+      chips: state.tournament.structure.startingChips,
       buyInType: newPlayer.buyInType || 'normal',
       paidAdminFee: newPlayer.paidAdminFee || false
     };
     
-    setPlayers(prev => [...prev, player]);
+    actions.addPlayer(player);
     
     toast({
       title: "Jogador Adicionado",
       description: `${player.name} foi registrado no torneio.`,
     });
-  }, [tournament.state.structure.startingChips, toast]);
+  }, [state.tournament.structure.startingChips, actions, toast]);
 
   const handleRemovePlayer = useCallback((playerId: string) => {
-    const player = players.find(p => p.id === playerId);
-    setPlayers(prev => prev.filter(p => p.id !== playerId));
+    const player = state.players.find(p => p.id === playerId);
+    actions.removePlayer(playerId);
     
     if (player) {
       toast({
@@ -88,41 +74,24 @@ export default function TournamentManagement() {
         variant: "destructive"
       });
     }
-  }, [players, toast]);
+  }, [state.players, actions, toast]);
 
   const handleEliminatePlayer = useCallback((playerId: string) => {
-    const player = players.find(p => p.id === playerId);
+    const player = state.players.find(p => p.id === playerId);
     if (player) {
-      const remainingPlayers = players.filter(p => !p.isEliminated && p.id !== playerId);
+      const remainingPlayers = state.players.filter(p => !p.isEliminated && p.id !== playerId);
       const position = remainingPlayers.length + 1;
       
-      setPlayers(prev => prev.map(p => 
-        p.id === playerId 
-          ? { ...p, isEliminated: true, position, eliminationLevel: tournament.state.currentLevel }
-          : p
-      ));
+      actions.eliminatePlayer(playerId, position, state.tournament.currentLevel);
       
       toast({
         title: "Jogador Eliminado",
         description: `${player.name} terminou em ${position}º lugar.`,
       });
     }
-  }, [players, tournament.state.currentLevel, toast]);
+  }, [state.players, state.tournament.currentLevel, actions, toast]);
 
-  const currentState: TournamentState = {
-    ...tournament.state,
-    totalPlayers: players.length,
-    playersRemaining: players.filter(p => !p.isEliminated).length,
-    prizePool: Math.max(
-      players.reduce((total, player) => {
-        const buyInAmount = player.buyInType === 'double' 
-          ? tournament.state.structure.doubleBuyIn 
-          : tournament.state.structure.buyIn;
-        return total + buyInAmount;
-      }, 0),
-      tournament.state.structure.guaranteedPrize
-    )
-  };
+  const currentState = state.tournament;
 
   return (
     <div className="min-h-screen bg-background p-4 lg:p-6">
@@ -160,15 +129,32 @@ export default function TournamentManagement() {
             <TournamentControls
               isRunning={tournament.isRunning}
               isPaused={tournament.isPaused}
-              currentStructure={tournament.state.structure}
+              currentStructure={state.tournament.structure}
               onStart={tournament.startTimer}
               onPause={tournament.pauseTimer}
-              onReset={tournament.resetTimer}
+              onReset={actions.resetTournament}
               onSkip={tournament.skipLevel}
               onStructureChange={handleStructureChange}
-              onPlayersToggle={() => setIsPlayerManagerOpen(true)}
-              onSettingsToggle={() => setIsSettingsOpen(true)}
             />
+            
+            {/* Expandable Sections */}
+            <div className="space-y-4">
+              <PlayerDropdown
+                isOpen={isPlayerManagerOpen}
+                onToggle={() => setIsPlayerManagerOpen(!isPlayerManagerOpen)}
+                players={state.players}
+                onAddPlayer={handleAddPlayer}
+                onRemovePlayer={handleRemovePlayer}
+                onEliminatePlayer={handleEliminatePlayer}
+              />
+              
+              <SettingsDropdown
+                isOpen={isSettingsOpen}
+                onToggle={() => setIsSettingsOpen(!isSettingsOpen)}
+                currentStructure={state.tournament.structure}
+                onUpdateStructure={handleUpdateStructure}
+              />
+            </div>
             
             {/* Quick Actions */}
             <Card className="bg-gradient-felt border-primary/20 shadow-poker">
@@ -178,27 +164,11 @@ export default function TournamentManagement() {
                   Ações Rápidas
                 </CardTitle>
               </CardHeader>
-              <CardContent className="grid grid-cols-2 gap-3">
-                <Button 
-                  variant="outline" 
-                  onClick={() => setIsPlayerManagerOpen(true)}
-                  className="gap-2 hover-scale"
-                >
-                  <Users className="w-4 h-4" />
-                  Jogadores ({currentState.totalPlayers})
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => setIsSettingsOpen(true)}
-                  className="gap-2 hover-scale"
-                >
-                  <Settings className="w-4 h-4" />
-                  Configurações
-                </Button>
+              <CardContent className="grid grid-cols-1 gap-3">
                 <Button 
                   variant="outline" 
                   onClick={() => navigate('/tournament/display')}
-                  className="gap-2 hover-scale col-span-2"
+                  className="gap-2 hover-scale"
                 >
                   <Monitor className="w-4 h-4" />
                   Visualização Completa
@@ -217,7 +187,7 @@ export default function TournamentManagement() {
               <CardContent className="space-y-4">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary">
-                    {tournament.formatTime(tournament.state.timeRemaining)}
+                    {tournament.formatTime(state.tournament.timeRemaining)}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     Nível {tournament.currentLevel?.isBreak ? 'BREAK' : tournament.currentLevel?.level || 1}
@@ -286,23 +256,7 @@ export default function TournamentManagement() {
           </div>
         </div>
 
-        {/* Player Sidebar */}
-        <PlayerSidebar
-          isOpen={isPlayerManagerOpen}
-          onClose={() => setIsPlayerManagerOpen(false)}
-          players={players}
-          onAddPlayer={handleAddPlayer}
-          onRemovePlayer={handleRemovePlayer}
-          onEliminatePlayer={handleEliminatePlayer}
-        />
-
-        {/* Settings Sidebar */}
-        <SettingsSidebar
-          isOpen={isSettingsOpen}
-          onClose={() => setIsSettingsOpen(false)}
-          currentStructure={tournament.state.structure}
-          onUpdateStructure={handleUpdateStructure}
-        />
+        {/* Remove old sidebars - they are now replaced by dropdowns */}
       </div>
     </div>
   );
